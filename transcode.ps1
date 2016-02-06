@@ -1,6 +1,6 @@
-param(
+﻿param(
   [string]$rotate = "auto",
-  [string]$list
+  [string]$list #= "C:\Users\beej1\AppData\Local\Temp\fmt2191.tmp"
 )
 
 #debug: "args: $args, rotate: $rotate, listFile: $list"; pause
@@ -34,7 +34,8 @@ if (!!$rotate -and $rotate -ne "none") {
 
 gc $list | % {
 
-  if (!$_) { continue } #skip blank lines in the input files list
+  #skip blank lines in the input files list
+  if (!$_) { return } #nugget: use return vs continue in a foreach-object loop: http://stackoverflow.com/questions/7760013/why-does-continue-behave-like-break-in-a-foreach-object
 
   #otherwise "auto" rotation means using mediainfo CLI to determine appropriate rotation...
   #i would find that sometimes "3" would work and sometimes it wouldn't... then "2" would be a good compromise... it just seemed to depend on the source
@@ -51,6 +52,8 @@ gc $list | % {
   $newFile = [System.IO.Path]::ChangeExtension($_, "mp4")
   Write-Host -ForegroundColor Yellow "`nhandbrakecli -e x264 -q 26 $rotation -i `"$_`" -o `"$newFile`"`n"
   handbrakecli -e x264 -q 26 $rotation -i "$_" -o "$newFile"
+  if ($LASTEXITCODE -ne 0 -or !(test-path $newFile)) { $handBrakeError = $true; return }
+
   #in my usage, dates get stepped on from moving things around, pulling oldest date to help compensate
   #then set new converted file create and modified time
   $oldestDatestamp = [datetime][math]::Min((gi $_).CreationTime.ticks, (gi $_).LastWriteTime.Ticks)
@@ -61,6 +64,6 @@ gc $list | % {
 #write-host "press any key to finish and close"
 #$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 
-if ($Error) { pause }
+if ($Error -or $handBrakeError) { Write-Host -ForegroundColor Red "`nthere were errors`nlist file: $list`n"; pause }
 
 erase $list
