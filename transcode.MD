@@ -10,7 +10,7 @@ Digital cameras and phones typically save video to MOV (Motion JPEG) files. I sh
 
 #### Leverages 3rd party tools:
 
-*   [FileMenu Tools](http://www.lopesoft.com/en/products) - handy for creating a FileExplorer right mouse context menu for executing transcode on selected files
+*   [FileMenu Tools (FMT)](http://www.lopesoft.com/en/products) - handy for creating a FileExplorer right mouse context menu for executing transcode on selected files
 *   [HandBrake](https://handbrake.fr/downloads.php) - read something that suggested HandBrake is faster than ffmpeg and that appears true on my quick comparison
 *   [MediaInfo](http://mediaarea.net/en/MediaInfo/Download/Windows) - pulls the [EXIF](https://en.wikipedia.org/wiki/Exchangeable_image_file_format) metadata to determine if any rotation is necessary
 
@@ -19,7 +19,7 @@ Digital cameras and phones typically save video to MOV (Motion JPEG) files. I sh
 1.  save [transcode.ps1](https://raw.githubusercontent.com/Beej126/PowerShell/master/transcode.ps1) to a known location
 1.  install FileMenu Tools and disable all the commands you don’t want.
 1. Configure a “transcode” command as shown in screenshot below... **edit for your path**
-  * ```updated Arguments structure: -Command "{path}\transcode.ps1" -list %TEMPFILEPATHS% -rotate auto```
+  * ```updated FMT Arguments: -Command "{path}\transcode.ps1" -list %TEMPFILEPATHS% -rotate auto```
 1.  install HandBrake and put HandBrakeCli in your path
 1.  minimally, put MediaInfo.exe and MediaInfo.dll in your path
 
