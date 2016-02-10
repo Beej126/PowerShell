@@ -19,7 +19,7 @@ Digital cameras and phones typically save video to MOV (Motion JPEG) files. I sh
 1.  save [transcode.ps1](https://raw.githubusercontent.com/Beej126/PowerShell/master/transcode.ps1) to a known location
 1.  install FileMenu Tools and disable all the commands you don’t want.
 1. Configure a “transcode” command as shown in screenshot below... **edit for your path**
-  * ```updated FMT Arguments: -Command "{path}\transcode.ps1" -list %TEMPFILEPATHS% -rotate auto```
+  * updated FMT Arguments: ```-Command "{path}\transcode.ps1" -list %TEMPFILEPATHS% -rotate auto```
 1.  install HandBrake and put HandBrakeCli in your path
 1.  minimally, put MediaInfo.exe and MediaInfo.dll in your path
 
