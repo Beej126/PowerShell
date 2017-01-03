@@ -51,7 +51,7 @@ gc $list | % {
 
   $fileName = [System.IO.Path]::GetFileNameWithoutExtension($_)
   #make sure we don't overwrite if we're converting from mp4 to mp4
-  if ([System.IO.Path]::GetExtension($_) -eq ".mp4") { $fileName += "_tr" }
+  if ([System.IO.Path]::GetExtension($_).ToLower() -eq ".mp4") { $fileName += "_tr" }
   $newFile = [System.IO.Path]::ChangeExtension($fileName, "mp4")
   
   Write-Host -ForegroundColor Yellow "`nhandbrakecli -e x264 -q 26 $rotation -i `"$_`" -o `"$newFile`"`n"
