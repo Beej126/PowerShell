@@ -1,4 +1,4 @@
-﻿param(
+param(
   [string]$rotate = "auto",
   [string]$list #= "C:\Users\beej1\AppData\Local\Temp\fmt2191.tmp"
 )
@@ -49,7 +49,11 @@ gc $list | % {
     }
   }
 
-  $newFile = [System.IO.Path]::ChangeExtension($_, "mp4")
+  $fileName = [System.IO.Path]::GetFileNameWithoutExtension($_)
+  #make sure we don't overwrite if we're converting from mp4 to mp4
+  if ([System.IO.Path]::GetExtension($_) -eq ".mp4") { $fileName += "_tr" }
+  $newFile = [System.IO.Path]::ChangeExtension($fileName, "mp4")
+  
   Write-Host -ForegroundColor Yellow "`nhandbrakecli -e x264 -q 26 $rotation -i `"$_`" -o `"$newFile`"`n"
   handbrakecli -e x264 -q 26 $rotation -i "$_" -o "$newFile"
   if ($LASTEXITCODE -ne 0 -or !(test-path $newFile)) { $handBrakeError = $true; return }
