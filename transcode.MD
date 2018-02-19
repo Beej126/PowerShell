@@ -10,9 +10,10 @@ Digital cameras and phones typically save video to MOV (Motion JPEG) files. I sh
 
 #### Leverages 3rd party tools:
 
-*   [FileMenu Tools (FMT)](http://www.lopesoft.com/en/products) - handy for creating a FileExplorer right mouse context menu for executing transcode on selected files
-*   [HandBrake](https://handbrake.fr/downloads.php) - read something that suggested HandBrake is faster than ffmpeg and that appears true on my quick comparison
-*   [MediaInfo](http://mediaarea.net/en/MediaInfo/Download/Windows) - pulls the [EXIF](https://en.wikipedia.org/wiki/Exchangeable_image_file_format) metadata to determine if any rotation is necessary
+* <s>[FileMenu Tools (FMT)](http://www.lopesoft.com/en/products) - handy for creating a FileExplorer right mouse context menu for executing transcode on selected files</s>
+* [See new free approach](https://github.com/Beej126/SingleInstanceAccumulator) for the Context Menu piece
+* [HandBrake](https://handbrake.fr/downloads.php) - read something that suggested HandBrake is faster than ffmpeg and that appears true on my quick comparison
+* [MediaInfo](http://mediaarea.net/en/MediaInfo/Download/Windows) - pulls the [EXIF](https://en.wikipedia.org/wiki/Exchangeable_image_file_format) metadata to determine if any rotation is necessary
 
 #### Install:
 
@@ -26,7 +27,3 @@ Digital cameras and phones typically save video to MOV (Motion JPEG) files. I sh
 # Windows File Explorer UI example
 
 ![enter image description here](http://www.BeejBlog.com/wp-content/uploads/2015/11/Snap6.png)
-
-# FileMenu Tools Config
-
-![enter image description here](http://www.BeejBlog.com/wp-content/uploads/2015/11/Snap1.png)
