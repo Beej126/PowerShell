@@ -1,9 +1,9 @@
 param(
   [string]$rotate = "auto",
-  [string]$list #= "C:\Users\beej1\AppData\Local\Temp\fmt2191.tmp"
+  [string]$listFilePath #= "C:\Users\beej1\AppData\Local\Temp\fmt2191.tmp"
 )
 
-#debug: "args: $args, rotate: $rotate, listFile: $list"; pause
+#debug: "args: $args, rotate: $rotate, listFile: $listFilePath"; pause
 
 #if we've passed a rotate directive, and it's not "none"...
 if (!!$rotate -and $rotate -ne "none") {
@@ -32,7 +32,7 @@ if (!!$rotate -and $rotate -ne "none") {
 
 #debug: "rotation: $rotate"; pause
 
-gc $list | % {
+gc $listFilePath | % {
 
   #skip blank lines in the input files list
   if (!$_) { return } #nugget: use return vs continue in a foreach-object loop: http://stackoverflow.com/questions/7760013/why-does-continue-behave-like-break-in-a-foreach-object
@@ -43,17 +43,15 @@ gc $list | % {
   if ($rotate -eq "auto") {
 
     $rotation = (mediainfo "$_" | Select-String -Pattern "Rotation +: ([0-9]+)")
-    if ($rotation) {
+    if ($rotation) { $rotation = "--rotate=`"angle=" + $rotation.Matches[0].Groups[1].Value + "`"" }
+
+    <#if ($rotation) {
       if ($rotation.Matches[0].Groups[1].Value -eq "90") { $rotation = "--rotate=4" } #90 degree rotate
-      else { $rotation = "--rotate=3" } #for some reason the default 180 degree rotate doesn't always do it... in those cases i've found that manually applying two separate passes of 2 works out but it doesn't make any sense why yet
-    }
+      else { $rotation = "--rotate=180" } #for some reason the default 180 degree rotate doesn't always do it... in those cases i've found that manually applying two separate passes of 2 works out but it doesn't make any sense why yet
+    }#>
   }
 
-  $fileName = [System.IO.Path]::GetFileNameWithoutExtension($_)
-  #make sure we don't overwrite if we're converting from mp4 to mp4
-  if ([System.IO.Path]::GetExtension($_).ToLower() -eq ".mp4") { $fileName += "_tr" }
-  $newFile = [System.IO.Path]::ChangeExtension($fileName, "mp4")
-  
+  $newFile = [System.IO.Path]::ChangeExtension($_, "mp4")
   Write-Host -ForegroundColor Yellow "`nhandbrakecli -e x264 -q 26 $rotation -i `"$_`" -o `"$newFile`"`n"
   handbrakecli -e x264 -q 26 $rotation -i "$_" -o "$newFile"
   if ($LASTEXITCODE -ne 0 -or !(test-path $newFile)) { $handBrakeError = $true; return }
@@ -68,6 +66,6 @@ gc $list | % {
 #write-host "press any key to finish and close"
 #$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 
-if ($Error -or $handBrakeError) { Write-Host -ForegroundColor Red "`nthere were errors`nlist file: $list`n"; pause }
+if ($Error -or $handBrakeError) { Write-Host -ForegroundColor Red "`nthere were errors`nlist file: $listFilePath`n"; pause }
 
-erase $list
+erase $listFilePath
